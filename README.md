@@ -1,1 +1,3 @@
-# pyrdle
+# PYRDLE
+
+A wordle implementation in Python
