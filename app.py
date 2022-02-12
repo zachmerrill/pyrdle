@@ -16,13 +16,14 @@ keyboard_correct = []  # Stores the correct keys so we don't overwrite them
 def print_board():
     global board
     os.system('cls' if os.name == 'nt' else 'clear')
-    print(Text.apply('PYRDLE'.center(20), Text.UNDERLINE) + '\n')
+    print(Text.apply('PYRDLE'.center(20), Text.UNDERLINE))
     print()
     for i in range(0, MAX_GUESSES):
         print('   ', end='')
         for j in range(0, MAX_LETTERS):
             print(board[i][j], end='  ')
         print('', end='\n')
+    print()
     print(keyboard)
     print()
 
