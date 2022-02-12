@@ -13,6 +13,7 @@ ACCEPTED_START_STRING = ',Ia='
 
 
 class Wordle:
+    wordle_number = 0
     wotd = []
     accepted = []
 
@@ -32,5 +33,6 @@ class Wordle:
         self.accepted = ast.literal_eval(
             content[accepted_start+len(LIST_DIVIDER):accepted_end]) + answers
         # Initialize the word of the day based on todays date
-        self.wotd = answers[(datetime.datetime.now() -
-                             WORDLE_START_DATE).days]
+        self.wordle_number = (datetime.datetime.now() -
+                              WORDLE_START_DATE).days
+        self.wotd = answers[self.wordle_number]

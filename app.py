@@ -13,5 +13,11 @@ if __name__ == '__main__':
         game.print_board()
         # Check if the game is won
         if game.is_won():
-            print('You won!')
+            print('You won!\n')
+            game.print_share()
+            break
+        # Check if the game is lost
+        if game.is_lost():
+            print('You lost!\n')
+            game.print_share()
             break
