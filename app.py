@@ -6,7 +6,7 @@ if __name__ == '__main__':
     # Game loop
     while True:
         # Get the user's guess
-        guess = input('Guess a word: ')
+        guess = input('Guess a word: ').lower()
         # Check the guess
         game.check_guess(guess)
         # Print the board
