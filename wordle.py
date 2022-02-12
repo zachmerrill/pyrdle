@@ -26,9 +26,11 @@ class Wordle:
         accepted_start = content.find(LIST_DIVIDER)
         accepted_end = content.find(ACCEPTED_START_STRING)
         # Initialize the accepted words list
-        self.accepted = ast.literal_eval(
-            content[accepted_start+len(LIST_DIVIDER):accepted_end])
-        # Initialize the word of the day based on todays date
         answers = ast.literal_eval(
             content[answers_start+len(ANSWERS_START_STRING):accepted_start])
-        self.wotd = answers[(datetime.datetime.now() - WORDLE_START_DATE).days]
+        # Wordle separates the accepted and wotd lists so we need to combine them for our checker
+        self.accepted = ast.literal_eval(
+            content[accepted_start+len(LIST_DIVIDER):accepted_end]) + answers
+        # Initialize the word of the day based on todays date
+        self.wotd = answers[(datetime.datetime.now() -
+                             WORDLE_START_DATE).days]
