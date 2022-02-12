@@ -1,6 +1,6 @@
 import os
-from text import *
-from get import *
+from text import Text
+from wordle import Wordle
 
 WORDLE = 'elder'.upper()
 
