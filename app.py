@@ -1,53 +1,69 @@
 import os
+from text import *
 
-TITLE = 'PYRDLE'.center(20)
-EMPTY = '⬚'
 WORDLE = 'elder'.upper()
-board = [[EMPTY]*5 for i in range(6)]
+
+# Wordle requirements
+MAX_LETTERS = 5
+MAX_GUESSES = 6
+
+# Initialize board
+board = [['⬚']*5 for i in range(6)]
 keyboard = 'Q W E R T Y U I O P \n A S D F G H J K L \n  Z X C V B N M'
+keyboard_correct = []  # Stores the correct keys so we don't overwrite them
 
 
-def print_board(board):
-    for i in range(0, 5):
+def print_board():
+    global board
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(Text.apply('PYRDLE'.center(20), Text.UNDERLINE) + '\n')
+    print()
+    for i in range(0, MAX_GUESSES):
         print('   ', end='')
-        for j in range(0, 5):
+        for j in range(0, MAX_LETTERS):
             print(board[i][j], end='  ')
         print('', end='\n')
+    print(keyboard)
     print()
 
 
-def update_row_and_keyboard(word, row):
+def check_guess(word, row):
     global keyboard
     for i in range(0, 5):
         if WORDLE[i] == word[i]:
-            green = '\033[1;32;1m' + word[i] + '\033[0;0m'
-            board[row][i] = green
+            # Letter is in correct location
+            correct_letter = Text.apply(word[i], Text.GREEN)
+            board[row][i] = correct_letter
             keyboard = keyboard.replace(
-                word[i], green)
+                word[i], correct_letter)
+            # Add letter to keyboard list so we don't overwrite later
+            keyboard_correct.append(word[i])
         elif word[i] in WORDLE:
-            yellow = '\033[1;33;1m' + word[i] + '\033[0;0m'
-            board[row][i] = yellow
-            keyboard = keyboard.replace(
-                word[i], yellow)
+            # Letter is present but in incorrect location
+            present_letter = Text.apply(word[i], Text.YELLOW)
+            board[row][i] = present_letter
+            if word[i] not in keyboard_correct:
+                keyboard = keyboard.replace(
+                    word[i], present_letter)
         else:
-            red = '\033[1;31;1m' + word[i] + '\033[0;0m'
+            # Letter is not present
+            absent_letter = Text.apply(word[i], Text.RED)
             board[row][i] = word[i]
             keyboard = keyboard.replace(
-                word[i], red)
+                word[i], absent_letter)
 
-
-guess_count = 0
 
 # Game loop
+guess_count = 0
+print_board()
 while (True):
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print('\033[4m' + TITLE + '\033[0m' + '\n')
-    print()
-    print_board(board)
-    print(keyboard)
+    if(guess_count == MAX_GUESSES):
+        print(Text.apply('GAME OVER', Text.RED))
+        break
     guess = input('\n').upper()
-    update_row_and_keyboard(guess, guess_count)
+    check_guess(guess, guess_count)
+    print_board()
     if guess == WORDLE:
-        print('\n\033[1;32;1m' + 'You won!' + '\033[0;0m')
+        print(Text.apply('YOU WIN', Text.GREEN))
         break
     guess_count += 1
